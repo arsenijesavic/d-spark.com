@@ -21,11 +21,13 @@ const appearBottom = {
   hidden: {
     y: '200%',
     // color: '#0055FF',
+    opacity: 0,
     transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.3 },
   },
   visible: {
     y: 0,
     // color: '#FF0088',
+    opacity: 1,
     transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.3 },
   },
 }
@@ -56,11 +58,9 @@ export default function Home() {
 
 const Header = () => {
   return (
-    <header className=" z-50 flex items-center justify-center bg-white px-6 py-10">
-      <div>
+    <header className=" z-50 flex items-center justify-center bg-white px-6 py-8">
+      <div className="h-full w-full max-w-xs">
         <svg
-          width="209"
-          height="39"
           viewBox="0 0 209 39"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -346,151 +346,170 @@ const Hero = () => {
 }
 
 const About = () => {
-  const [ref, inView] = useInView()
-  const controls = useAnimation()
-
-  const container = {
-    visible: {
+  const variants = {
+    open: {
+      y: 0,
+      opacity: 1,
       transition: {
-        staggerChildren: 0.025,
+        y: { stiffness: 1000, velocity: -100 },
+      },
+    },
+    closed: {
+      y: 50,
+      opacity: 0,
+      transition: {
+        y: { stiffness: 1000 },
       },
     },
   }
 
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible')
-    }
-  }, [controls, inView])
+  const animation = {
+    initial: { ...variants.closed },
+    whileInView: { ...variants.open },
+    viewport: { once: true },
+  }
 
   return (
     <>
       <div>
         {/* DO YOU */}
-        <section>
+        <Section>
           <BoxHeader title="Do you?" />
 
           <PixelGrid>
             <ul className="m-0 flex list-none flex-wrap p-0 text-center">
-              {[
-                `Overthink and \n easily disperse`,
-                'Get bored\n quickly',
-                'Expect to\n be inspired',
-                'Are searching\n for new purpose',
-                // 'Would like to connect with new crew',
-                // 'Are exploring their authenticity',
-                // 'Could use fresh perspectives',
-                // 'Are ready for the new challenges',
-              ].map((item, index) => (
-                <motion.li
-                  // animate="visible"
-                  // animate={replay ? "visible" : "hidden"}
-                  // initial="hidden"
-                  //   ref={ref}
-                  //   animate={controls}
-                  //   variants={container}
-                  key={index}
-                  className="m-0 grid grid-cols-4 border-t border-gray-300 md:block md:w-6/12"
-                  //
-                >
-                  <div
-                    className={`${
-                      index % 2 === 0
-                        ? 'col-start-1 col-end-4 border-r border-gray-300'
-                        : 'col-start-2 col-end-5 border-l border-gray-300'
-                    }  flex h-28 items-center justify-center md:h-52`}
-                  >
-                    <p className="whitespace-pre px-12 text-center text-xl uppercase leading-none  md:text-3xl">
-                      {/* <AnimatedCharacters text={item} key={index} /> */}
-                      {item}
-                    </p>
-                  </div>
-                </motion.li>
-              ))}
+              <motion.li
+                {...animation}
+                className="m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 sm:border-r md:h-52 md:w-6/12"
+              >
+                <TextSlider
+                  className="max-w-sm px-12 text-center font-mono text-3xl uppercase leading-none sm:px-6 sm:text-4xl"
+                  text={[
+                    `Overthink and \n easily disperse`,
+                    'Would like to connect with new crew',
+                  ]}
+                />
+              </motion.li>
+
+              <motion.li
+                {...animation}
+                className="m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 md:h-52 md:w-6/12"
+              >
+                <TextSlider
+                  className="max-w-sm px-12 text-center font-mono text-3xl uppercase leading-none sm:px-6 sm:text-4xl"
+                  text={[
+                    'Get bored\n quickly',
+                    'Are exploring their authenticity',
+                  ]}
+                />
+              </motion.li>
+
+              <motion.li
+                {...animation}
+                className="m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 sm:border-r md:h-52 md:w-6/12"
+              >
+                <TextSlider
+                  className="max-w-sm px-12 text-center font-mono text-3xl uppercase leading-none sm:px-6 sm:text-4xl"
+                  text={[
+                    'Expect to\n be inspired',
+                    'Could use fresh perspectives',
+                  ]}
+                />
+              </motion.li>
+
+              <motion.li
+                {...animation}
+                className="m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 md:h-52 md:w-6/12"
+              >
+                <TextSlider
+                  className="max-w-sm px-12 text-center font-mono text-3xl uppercase leading-none sm:px-6 sm:text-4xl"
+                  text={[
+                    'Are searching\n for new purpose',
+                    'Are ready for the new challenges',
+                  ]}
+                />
+              </motion.li>
 
               <li className="m-0 flex h-28 w-full items-center justify-center border-t border-gray-300 md:h-52">
                 <PlayButton />
               </li>
             </ul>
           </PixelGrid>
-        </section>
+        </Section>
 
         {/* WHAT IF */}
-        <section>
+        <Section>
           <BoxHeader title="What if?" />
 
-          <PixelGrid className="">
+          <PixelGrid>
             <ul className="m-0 flex list-none flex-col items-center justify-center p-0 text-center">
-              <li className="bg-red m-0 flex h-40 items-center justify-center border-t border-gray-300 py-10 last:border-b">
-                <h4 className="max-w-lg px-4 text-center text-4xl uppercase leading-none">
-                  <TypeWriterEffect
-                    textStyle={{ textAlign: 'center' }}
-                    startDelay={150}
-                    multiText={[
-                      'You felt good about yourself?',
-                      'You had courage to change your career?',
-                      'You felt good about yourself?',
-                      'You had courage to change your career?',
-                      'You felt good about yourself?',
-                      'You had courage to change your career?',
-                    ]}
-                    multiTextDelay={1000}
-                    typeSpeed={30}
-                  />
-                </h4>
-              </li>
+              <motion.li
+                {...animation}
+                className="m-0 flex h-40 w-full items-center justify-center overflow-hidden border-t border-gray-300 py-10 last:border-b md:h-52"
+              >
+                <TextSlider
+                  className="max-w-sm px-8 text-center font-mono text-3xl uppercase leading-none sm:max-w-xl sm:px-6 sm:text-4xl"
+                  text={[
+                    'You felt good about yourself?',
+                    'You had courage to change your career?',
+                    'You felt good about yourself?',
+                    'You had courage to change your career?',
+                    'You felt good about yourself?',
+                    'You had courage to change your career?',
+                  ]}
+                />
+              </motion.li>
 
-              <li className="m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 py-10 last:border-b">
-                <h4 className="max-w-lg px-4 text-4xl uppercase leading-none">
-                  <TypeWriterEffect
-                    // startDelay={1000}
-                    textStyle={{ textAlign: 'center' }}
-                    multiText={[
-                      'You if you felt confident about your work?',
-                      'You were not afraid to share what you really think?',
-                      'You if you felt confident about your work?',
-                      'You were not afraid to share what you really think?',
-                      'You if you felt confident about your work?',
-                      'You were not afraid to share what you really think?',
-                    ]}
-                    multiTextDelay={1000}
-                    typeSpeed={30}
-                  />
-                </h4>
-              </li>
+              <motion.li
+                {...animation}
+                className="m-0 flex h-40 w-full items-center justify-center overflow-hidden border-t border-gray-300 py-10 last:border-b md:h-52"
+              >
+                <TextSlider
+                  className="max-w-sm px-8 text-center font-mono text-3xl uppercase leading-none sm:max-w-xl sm:px-6 sm:text-4xl"
+                  text={[
+                    'You if you felt confident about your work?',
+                    'You were not afraid to share what you really think?',
+                    'You if you felt confident about your work?',
+                    'You were not afraid to share what you really think?',
+                    'You if you felt confident about your work?',
+                    'You were not afraid to share what you really think?',
+                  ]}
+                />
+              </motion.li>
 
-              <li className="m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 py-10 last:border-b">
-                <h4 className="max-w-lg px-4 text-4xl uppercase leading-none">
-                  <TypeWriterEffect
-                    textStyle={{ textAlign: 'center' }}
-                    // startDelay={1000}
-                    multiText={[
-                      'You if you embraced your flaws?',
-                      'You didn’t hold back your creativity?',
-                      'You if you embraced your flaws?',
-                      'You didn’t hold back your creativity?',
-                      'You if you embraced your flaws?',
-                      'You didn’t hold back your creativity?',
-                    ]}
-                    multiTextDelay={1000}
-                    typeSpeed={30}
-                  />
-                </h4>
-              </li>
+              <motion.li
+                {...animation}
+                className="m-0 flex h-40 w-full items-center justify-center overflow-hidden border-t border-gray-300 py-10 last:border-b md:h-52"
+              >
+                <TextSlider
+                  className="max-w-sm px-8 text-center font-mono text-3xl uppercase leading-none sm:max-w-xl sm:px-6 sm:text-4xl"
+                  text={[
+                    'You if you embraced your flaws?',
+                    'You didn’t hold back your creativity?',
+                    'You if you embraced your flaws?',
+                    'You didn’t hold back your creativity?',
+                    'You if you embraced your flaws?',
+                    'You didn’t hold back your creativity?',
+                  ]}
+                />
+              </motion.li>
 
-              <li className="m-0  flex h-40 w-full items-center justify-center border-t border-gray-300">
+              <motion.li
+                {...animation}
+                className="bg-red m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 py-10 last:border-b"
+              >
                 <PlayButton />
-              </li>
+              </motion.li>
             </ul>
           </PixelGrid>
-        </section>
+        </Section>
 
         {/* ARE YOU READY TO */}
-        <section>
+        <Section>
           <BoxHeader title={`Are you <br class="sm:hidden" /> ready to`} />
 
-          <PixelGrid className="">
-            <ul className="m-0 flex list-none flex-wrap p-0">
+          <PixelGrid>
+            <ul className="m-0 flex list-none flex-wrap p-0 text-center">
               {[
                 {
                   keyword: 'REVEAL',
@@ -527,51 +546,39 @@ const About = () => {
                     '& meet fresh people through a playful experience. ',
                 },
               ].map((item, index) => (
-                <li
-                  key={index}
+                <motion.li
+                  {...animation}
                   className="m-0 flex h-48 flex-col items-center justify-center border-t border-gray-600 px-6 md:w-6/12 md:border"
+                  key={index}
                 >
                   <h4 className=" max-w-xs px-4 text-center text-4xl uppercase leading-none">
                     {item.keyword} <br className="sm:hidden" /> {item.title}
                   </h4>
 
-                  {/* <button>
-                  <svg
-                    width="32"
-                    height="20"
-                    viewBox="0 0 32 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12.7988 20L12.7988 13.3237L19.2012 13.3237L19.2012 19.9871L12.7988 20ZM6.39939 13.3237L6.39939 6.66345L12.7988 6.66345L12.7988 13.3237L6.39939 13.3237ZM19.2012 13.3237L19.2012 6.66345L25.6006 6.66345L25.6006 13.3237L19.2012 13.3237ZM-5.82959e-07 6.66345L-8.74228e-07 2.73532e-06L6.39939 2.4556e-06L6.39939 6.66345L-5.82959e-07 6.66345ZM25.6006 6.66345L25.6006 1.61629e-06L32 1.33656e-06L32 6.66345L25.6006 6.66345Z"
-                      fill="#010101"
-                    />
-                  </svg>
-                </button> */}
-
                   <p className="mt-2 max-w-xs px-4 text-center text-xl leading-none">
                     {item.subtitle}
                   </p>
-                </li>
+                </motion.li>
               ))}
-              <li className="m-0 flex h-28 w-full items-center justify-center border-t border-gray-300 md:h-52">
+              <motion.li
+                {...animation}
+                className="m-0 flex h-28 w-full items-center justify-center border-t border-gray-300 md:h-52"
+              >
                 <PlayButton />
-              </li>
+              </motion.li>
             </ul>
           </PixelGrid>
-        </section>
+        </Section>
 
         {/* BECAUSE */}
-        <section>
+        <Section>
           <BoxHeader title="Because" />
 
-          <div className="flex items-center justify-center bg-black py-8 text-white md:py-16">
-            <h4 className="h-32 max-w-lg  px-4 text-center text-4xl uppercase leading-none">
-              <TypeWriterEffect
-                textStyle={{ textAlign: 'center' }}
-                startDelay={150}
-                multiText={[
+          <div className="flex h-52 items-center justify-center overflow-hidden bg-black py-8 text-white md:py-16">
+            <motion.h4 {...animation}>
+              <TextSlider
+                className="max-w-lg px-4 text-center font-mono text-4xl uppercase leading-none"
+                text={[
                   'We want to adapt better to this ever-changing world.',
                   'We need to improve our ability to connect and collaborate.',
                   'We wish to create a relevant imprint.',
@@ -579,36 +586,40 @@ const About = () => {
                   'We need to improve our ability to connect and collaborate.',
                   'We wish to create a relevant imprint.',
                 ]}
-                multiTextDelay={1000}
-                typeSpeed={30}
               />
-            </h4>
+            </motion.h4>
           </div>
-        </section>
+        </Section>
 
         {/* HOW */}
-        <section>
+        <Section>
           <BoxHeader title="How?" />
 
-          <div className="wrap md:blo items-stretch  bg-red-300">
+          <div className="wrap items-stretch">
             <div
               id="a"
               className="flex items-center justify-center bg-green py-8"
             >
-              <h4 className="px-4 text-center text-4xl uppercase leading-none">
+              <motion.h4
+                {...animation}
+                className="px-4 text-center text-4xl uppercase leading-none"
+              >
                 5 week program
-              </h4>
+              </motion.h4>
             </div>
 
             <div
               id="c"
               className="border-t border-b border-gray-300 bg-gold py-8 text-center"
             >
-              <h4 className="px-4 text-4xl uppercase leading-none">
+              <motion.h4
+                {...animation}
+                className="px-4 text-4xl uppercase leading-none"
+              >
                 10 online <br /> sessions
-              </h4>
+              </motion.h4>
 
-              <ul className="mt-6">
+              <motion.ul {...animation} className="mt-6">
                 {[
                   'self discovery games',
                   'hands on activities',
@@ -621,19 +632,22 @@ const About = () => {
                     </div>
                   </li>
                 ))}
-              </ul>
+              </motion.ul>
             </div>
 
             <div
               id="b"
               className="flex items-center justify-center bg-blue py-8"
             >
-              <h4 className="px-4 text-center text-4xl uppercase leading-none">
+              <motion.h4
+                {...animation}
+                className="px-4 text-center text-4xl uppercase leading-none"
+              >
                 +1 REAL MEETUP
-              </h4>
+              </motion.h4>
             </div>
           </div>
-        </section>
+        </Section>
       </div>
       <style jsx>{`
         @media (min-width: 768px) {
@@ -673,7 +687,7 @@ const Footer = () => {
 
         <p className=" mt-6 text-sm uppercase">
           Created by <br />
-          Nova Iskra and DACIDA.
+          Nova Iskra and DACIDA
         </p>
       </footer>
       <style jsx>{`
@@ -687,6 +701,41 @@ const Footer = () => {
         }
       `}</style>
     </>
+  )
+}
+
+const TextSlider = ({ className, text }) => {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setIndex(index++)
+    }, 2000)
+
+    return () => clearInterval(intervalId)
+  }, [index, setIndex])
+
+  const variants = {
+    enter: { opacity: 0, y: -100 },
+    center: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 100 },
+  }
+
+  const currentIndex = index % text.length
+
+  return (
+    <span className="block">
+      <motion.div
+        key={index}
+        variants={variants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        className={`${className} inline-block`}
+      >
+        {text[currentIndex]}
+      </motion.div>
+    </span>
   )
 }
 
@@ -706,65 +755,19 @@ const BoxHeader = ({ title }) => {
   )
 }
 
-const AnimatedCharacters = (props) => {
-  const item = {
-    hidden: {
-      y: '200%',
-      // color: '#0055FF',
-      // transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.85 },
-    },
-    visible: {
-      y: 0,
-      // color: '#FF0088',
-      // transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.75 },
-    },
+const Section = ({ children }) => {
+  const container = {
+    open: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
+    closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
   }
 
-  //  Split each word of props.text into an array
-  const splitWords = props.text.split(' ')
-
-  // Create storage array
-  const words = []
-
-  // Push each word into words array
-  for (const [, item] of splitWords.entries()) {
-    words.push(item.split(''))
+  const animation = {
+    initial: { ...container.closed },
+    whileInView: { ...container.open },
+    viewport: { once: true },
   }
 
-  // Add a space ("\u00A0") to the end of each word
-  console.log(words)
-  words.map((word) => {
-    return word.push('\u00A0')
-  })
-
-  return (
-    <>
-      {words.map((word, index) => {
-        return (
-          <Fragment key={index}>
-            {words[index].flat().map((element, index) => {
-              return (
-                <span
-                  style={{ overflow: 'hidden', display: 'inline-block' }}
-                  key={index}
-                >
-                  <motion.span
-                    style={{ display: 'inline-block' }}
-                    variants={item}
-                    initial={{ ...item.hidden }}
-                    whileInView={{ ...item.visible }}
-                    viewport={{ once: true }}
-                  >
-                    {element}
-                  </motion.span>
-                </span>
-              )
-            })}
-          </Fragment>
-        )
-      })}
-    </>
-  )
+  return <motion.section {...animation}>{children}</motion.section>
 }
 
 const PlayButton = () => {
