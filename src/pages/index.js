@@ -373,11 +373,25 @@ const About = () => {
     <>
       <div>
         {/* DO YOU */}
-        <Section>
-          <BoxHeader title="Do you?" />
+        <Section className="sm:flex">
+          <BoxHeader className="w-full sm:w-6/12" title="Do you?" />
+
+          <div className="flex w-full flex-col items-center justify-center py-10 sm:w-6/12">
+            <TextSlider
+              className="max-w-sm  text-center font-mono text-3xl uppercase leading-none sm:text-5xl"
+              text={[
+                `Overthink and \n easily disperse`,
+                'Would like to connect with new crew',
+              ]}
+            />
+
+            <div className="mt-6">
+              <PlayButton />
+            </div>
+          </div>
 
           <PixelGrid>
-            <ul className="m-0 flex list-none flex-wrap p-0 text-center">
+            {/* <ul className="m-0 flex list-none flex-wrap p-0 text-center">
               <motion.li
                 {...animation}
                 className="m-0 flex h-40 w-full items-center justify-center border-t border-gray-300 sm:border-r md:h-52 md:w-6/12"
@@ -433,16 +447,30 @@ const About = () => {
               <li className="m-0 flex h-28 w-full items-center justify-center border-t border-gray-300 md:h-52">
                 <PlayButton />
               </li>
-            </ul>
+            </ul> */}
           </PixelGrid>
         </Section>
 
         {/* WHAT IF */}
-        <Section>
-          <BoxHeader title="What if?" />
+        <Section className="sm:flex">
+          <BoxHeader className="w-full sm:w-6/12" title="What if?" />
+
+          <div className="flex w-full flex-col items-center justify-center py-10 sm:w-6/12">
+            <TextSlider
+              className="max-w-sm  text-center font-mono text-3xl uppercase leading-none sm:text-5xl"
+              text={[
+                `Overthink and \n easily disperse`,
+                'Would like to connect with new crew',
+              ]}
+            />
+
+            <div className="mt-6">
+              <PlayButton />
+            </div>
+          </div>
 
           <PixelGrid>
-            <ul className="m-0 flex list-none flex-col items-center justify-center p-0 text-center">
+            {/* <ul className="m-0 flex list-none flex-col items-center justify-center p-0 text-center">
               <motion.li
                 {...animation}
                 className="m-0 flex h-40 w-full items-center justify-center overflow-hidden border-t border-gray-300 py-10 last:border-b md:h-52"
@@ -500,7 +528,7 @@ const About = () => {
               >
                 <PlayButton />
               </motion.li>
-            </ul>
+            </ul> */}
           </PixelGrid>
         </Section>
 
@@ -739,9 +767,11 @@ const TextSlider = ({ className, text }) => {
   )
 }
 
-const BoxHeader = ({ title }) => {
+const BoxHeader = ({ title, className }) => {
   return (
-    <header className="bg-black py-4 text-center text-white md:py-12">
+    <header
+      className={`bg-black py-4 text-center text-white md:py-48 ${className}`}
+    >
       <span className="inline-block">
         <motion.h2
           initial={{ ...appearBottom.hidden }}
@@ -755,7 +785,7 @@ const BoxHeader = ({ title }) => {
   )
 }
 
-const Section = ({ children }) => {
+const Section = ({ children, ...rest }) => {
   const container = {
     open: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
     closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
@@ -767,7 +797,7 @@ const Section = ({ children }) => {
     viewport: { once: true },
   }
 
-  return <motion.section {...animation}>{children}</motion.section>
+  return <motion.section {...(animation, rest)}>{children}</motion.section>
 }
 
 const PlayButton = () => {
